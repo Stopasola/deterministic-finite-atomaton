@@ -8,7 +8,7 @@ It simulates the behavior of the deterministic finite automaton given a number o
 
 ## Simulation of deterministic finite automaton
 
-A deterministic finite automaton simulator must be implemented, which receives the formal
+A deterministic finite automaton simulator was implemented, which receives the formal
 specification of an automaton and then a sequence of strings. It must simulate the execution
 of the automaton for each chain and respond with "S" if the chain is accepted, or with "N"
 if the chain is not accepted.
