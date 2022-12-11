@@ -8,91 +8,116 @@
 using namespace std;
 
 int main(){
-    string Alfabeto;
-    int Num_Elementos, i=0;
-    cin >> Alfabeto;
-    Num_Elementos = Alfabeto.size();
-    int Numero_Estados;
-    cin >> Numero_Estados;
-    if(Numero_Estados < 0 || Numero_Estados>10){
+
+    string alphabet;
+    int num_elements, i=0;
+
+    cin >> alphabet;
+
+    num_elements = alphabet.size();
+
+    int num_states;
+    cin >> num_states;
+
+    if(num_states < 0 || num_states > 10){
         return 0;
     }
-    int Estado_Inicial;
-    cin >> Estado_Inicial;
-    int Estados_Finais[Numero_Estados], Qtd_EstadosF=0;
-    char numero;
-    char proxChar;
+
+    int initial_state;
+    cin >> initial_state;
+
+    int final_states[num_states], qtt_finalStates=0;
+    char number;
+    char nextChar;
+
     i=0;
+
     do{
-        scanf("%d%c",&Estados_Finais[i],&numero);
+        scanf("%d%c", &final_states[i], &number);
         i++;
-        Qtd_EstadosF++;
-    }while(numero != '\n');
-    if(i > Numero_Estados){
+        qtt_finalStates++;
+    }while(number != '\n');
+
+    if(i > num_states){
         return 0;
     }
-    int Num_Transicoes;
-    cin >> Num_Transicoes;
-    if(Num_Transicoes<1 || Num_Transicoes > (Numero_Estados* Num_Elementos)){
+
+    int num_transitions;
+    cin >> num_transitions;
+
+    if(num_transitions < 1 || num_transitions > (num_states * num_elements)){
         return 0;
     }
-    int Estado_Saida[Num_Transicoes],Estado_Chegada[Num_Transicoes];
-    char Simbolo_lido[Num_Transicoes];
-    for(i=0;i<Num_Transicoes;i++){
-        scanf("%d %c %d", &Estado_Saida[i], &Simbolo_lido[i], &Estado_Chegada[i]);
+
+    int exit_state[num_transitions], arrive_state[num_transitions];
+    char readed_simbol[num_transitions];
+
+    for(i=0; i<num_transitions; i++){
+        scanf("%d %c %d", &exit_state[i], &readed_simbol[i], &arrive_state[i]);
     }
-    int Num_Testes;
-    cin >> Num_Testes;
-    if(Num_Testes <1 || Num_Testes>100){
+
+    int num_tests;
+    cin >> num_tests;
+
+    if(num_tests < 1 || num_tests > 100){
         return 0;
     }
+
     int Aux=0;
-    string Testes[Num_Testes];
-    char Simbolo_lido_Compu ;
-    int Estado_Atual, Prox_Estado;
-    while(Aux < Num_Testes){
-        cin >> Testes[Aux];
+    string tests[num_tests];
+    char readed_simbol_compu;
+    int actual_state, next_state;
+
+    while(Aux < num_tests){
+        cin >> tests[Aux];
         Aux++;
     }
-    bool Aceita = false;
+
+    bool accept = false;
     i=0;
-    int posicao = 0, Num_String=0,Auxiliar=0;
-    while(i < Num_Testes){
-        cout << Testes[i] << endl;
-        Testes[i].erase(0,1);
-        Testes[i].erase(Testes[i].size()-1,Testes[i].size());
-        Estado_Atual = Estado_Inicial;
-        while(posicao < Testes[i].size()){
-            Simbolo_lido_Compu = Testes[i].at(posicao);
-            for(int j=0;j<Num_Transicoes;j++){
-                if( Estado_Atual == Estado_Saida[j]){
-                    if(Simbolo_lido_Compu == Simbolo_lido[j]) {
-                        Estado_Atual = Estado_Chegada[j];
+    int position=0, Num_String=0, Auxiliar=0;
+
+    while(i < num_tests){
+        cout << tests[i] << endl;
+        tests[i].erase(0,1);
+        tests[i].erase(tests[i].size()-1, tests[i].size());
+        actual_state = initial_state;
+
+        while(position < tests[i].size()){
+            readed_simbol_compu = tests[i].at(position);
+            for(int j = 0; j < num_transitions; j++){
+                if(actual_state == exit_state[j]){
+                    if(readed_simbol_compu == readed_simbol[j]) {
+                        actual_state = arrive_state[j];
                         Auxiliar++;
                         break;
                     }
                 }
+            }
+            position++;
+        }
 
-            }
-            posicao++;
-        }
-        for(int j=0;j<Qtd_EstadosF;j++){
-            if(Estado_Atual == Estados_Finais[j]){
-                    Aceita = true;
+        for(int j=0; j < qtt_finalStates; j++){
+            if(actual_state == final_states[j]){
+                accept = true;
             }
         }
-        if(Auxiliar < Testes[i].size() &&  Testes[i].size()>0 ){
-            Aceita = false;
+
+        if(Auxiliar < tests[i].size() &&  tests[i].size()>0 ){
+            accept = false;
         }
-        if(Aceita == true){
+
+        if(accept == true){
             cout << "S" << endl;
         }else{
             cout << "N" << endl;
         }
+
         i++;
-        posicao=0;
-        Aceita = false;
+        position=0;
+        accept = false;
         Auxiliar=0;
     }
+
     return 0;
 }
